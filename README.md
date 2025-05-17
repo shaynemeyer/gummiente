@@ -1,7 +1,7 @@
 # Gummiente
-What is Gummiente? This application is my companion for the work I do. The word gummiente is German for "rubber duckie", which is an essential part of any technologists toolbox. :)
+What is Gummiente? The word gummiente is German for "rubber duckie", which is an essential part of any technologists toolbox. :)
 
-
+---
 ## Getting Started
 
 First, run the development server:
