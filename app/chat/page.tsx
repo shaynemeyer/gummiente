@@ -1,9 +1,13 @@
 "use client";
 
+import { Textarea } from "@/components/ui/textarea";
+import useFocusOnSlashPress from "@/hooks/useFocusOnSlashPress";
 import { Brain } from "lucide-react";
 import { useRef } from "react";
 
 function ChatPage() {
+  const inputRef = useFocusOnSlashPress();
+
   const messageEndRef = useRef(null);
   // const scrollToBottom = () => {
   //   messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -11,7 +15,7 @@ function ChatPage() {
 
   return (
     <div className="flex flex-col w-full max-w-4xl mx-auto py-24 stretch overflow-hidden">
-      <h1 className="text-6xl font-semibold leading-tight mt-4 mb-16">
+      <h1 className="text-6xl font-semibold leading-tight mt-4 mb-4">
         <div className="flex flex-row gap-2">
           Hello, I&apos;m{" "}
           <div className="flex flex-row items-center gap-1">
@@ -29,7 +33,20 @@ function ChatPage() {
         role="form"
         aria-labelledby="chat-form-label"
         // onSubmit={handleSubmit}
-      ></form>
+      >
+        <Textarea
+          ref={inputRef}
+          className="fixed bottom-0 w-full max-w-4xl p-2 mb-8 border border-gray-300 rounded shadow-xl"
+          autoFocus
+          placeholder="Type your message here..."
+          spellCheck={false}
+          autoCorrect="off"
+          autoComplete="off"
+          name="message"
+          rows={1}
+          tabIndex={0}
+        />
+      </form>
     </div>
   );
 }
