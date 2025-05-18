@@ -1,6 +1,6 @@
 # Gummiente
 
-<img src="public/images/logo.png" style="height:50px" alt="Gummiente logo" />
+<img src="public/images/logo.png" style="height:50px; float: left; margin-right: 2px;" alt="Gummiente logo" />
 What is Gummiente? The word gummiente is German for "rubber duckie", which is an essential part of any technologists toolbox. :)
 
 ---
