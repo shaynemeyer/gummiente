@@ -1,9 +1,7 @@
 # Gummiente
 
 <img src="public/images/logo.png" style="height:50px; float: left; margin-right: 2px;" alt="Gummiente logo" />
-What is Gummiente? The word gummiente is German for "rubber ducky". Why German? It's a nod to my Swiss heritage.
-
-This rubber ducky is powered by AI, whether local (Ollama) or some other service like OpenAI.
+What is Gummiente? The word gummiente is German for <a href="https://rubberduckdebugging.com/" target="_blank">"rubber ducky"</a>. Why German? It's a nod to my Swiss heritage. This rubber ducky is powered by AI, whether local (Ollama) or some other service like OpenAI.
 
 ---
 
@@ -22,4 +20,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Resources
 
+- [NextJS]()
 - [`next-themes`](https://www.npmjs.com/package/next-themes)
