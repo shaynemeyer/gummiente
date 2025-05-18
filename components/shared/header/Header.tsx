@@ -10,9 +10,10 @@ function Header() {
         <div className="flex flex-row gap2 items-center justify-center gap-3">
           <Image
             src="/images/logo.png"
-            width={50}
-            height={50}
+            width={40}
+            height={40}
             alt="Gummiente Logo"
+            className="w-auto h-auto"
           />
           Gummiente
         </div>
