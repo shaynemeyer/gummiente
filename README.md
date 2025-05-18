@@ -1,7 +1,9 @@
 # Gummiente
 
 <img src="public/images/logo.png" style="height:50px; float: left; margin-right: 2px;" alt="Gummiente logo" />
-What is Gummiente? The word gummiente is German for "rubber duckie", which is an essential part of any technologists toolbox. :)
+What is Gummiente? The word gummiente is German for "rubber ducky". Why German? It's a nod to my Swiss heritage.
+
+This rubber ducky is powered by AI, whether local (Ollama) or some other service like OpenAI.
 
 ---
 
