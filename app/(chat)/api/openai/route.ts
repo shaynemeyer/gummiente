@@ -1,7 +1,5 @@
 import { createOpenAI } from "@ai-sdk/openai";
-import { generateText } from "ai";
-import { NextRequest } from "next/server";
-import { v4 as uuidv4 } from "uuid";
+import { streamText } from "ai";
 
 export const dynamic = "force-dynamic";
 
@@ -9,21 +7,21 @@ const model = createOpenAI({
   apiKey: process.env.OPENAI_API_KEY || "",
 });
 
-export async function POST(req: NextRequest) {
-  const { text } = await req.json();
+export async function POST(req: Request) {
+  const { messages } = await req.json();
 
-  const result = await generateText({
-    system:
-      "I'm happy to assist you in any way I can. How can I be of service today?",
-    prompt: text,
+  const result = streamText({
     model: model("gpt-4o"),
     maxTokens: 512,
+    messages: [
+      {
+        role: "system",
+        content:
+          "I'm happy to assist you in any way I can. How can I be of service today?",
+      },
+      ...messages,
+    ],
   });
-  const message = {
-    id: uuidv4(),
-    role: "assistant",
-    // role: result.response.messages[0].role,
-    content: result.text, // Extract content from message
-  };
-  return Response.json({ message });
+
+  return result.toDataStreamResponse();
 }
