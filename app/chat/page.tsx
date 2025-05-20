@@ -1,13 +1,18 @@
 "use client";
 
 import { Textarea } from "@/components/ui/textarea";
+import useEnterSubmit from "@/hooks/useEnterSubmit";
 import useFocusOnSlashPress from "@/hooks/useFocusOnSlashPress";
+import { useChat } from "@ai-sdk/react";
 import { Brain } from "lucide-react";
 import { useRef } from "react";
 
 function ChatPage() {
+  const { formRef, onKeyDown } = useEnterSubmit();
   const inputRef = useFocusOnSlashPress();
-
+  const { message, input, handleInputChange, handleSubmit, status } = useChat({
+    api: "/api",
+  });
   const messageEndRef = useRef(null);
   // const scrollToBottom = () => {
   //   messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
