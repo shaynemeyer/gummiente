@@ -2,7 +2,7 @@
 import { KeyboardEvent, useRef } from "react";
 
 function useEnterSubmit() {
-  const formRef = useRef(null);
+  const formRef = useRef<null | HTMLFormElement>(null);
   const handleKeyDown = (
     event: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {

@@ -1,43 +1,66 @@
 "use client";
 
+import ChatList from "@/components/chat/ChatList";
 import { Textarea } from "@/components/ui/textarea";
 import useEnterSubmit from "@/hooks/useEnterSubmit";
 import useFocusOnSlashPress from "@/hooks/useFocusOnSlashPress";
 import { useChat } from "@ai-sdk/react";
 import { Brain } from "lucide-react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 function ChatPage() {
+  const [provider, setProvider] = useState("openai");
+  const [model, setModel] = useState("gpt-4");
+
+  const { messages, input, handleInputChange, handleSubmit, status } = useChat({
+    api: "/api",
+    body: {
+      provider,
+      model,
+    },
+  });
+
   const { formRef, onKeyDown } = useEnterSubmit();
   const inputRef = useFocusOnSlashPress();
-  const { message, input, handleInputChange, handleSubmit, status } = useChat({
-    api: "/api",
-  });
-  const messageEndRef = useRef(null);
-  // const scrollToBottom = () => {
-  //   messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  // };
+
+  const messageEndRef = useRef<null | HTMLDivElement>(null);
+  const scrollToBottom = () => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
     <div className="flex flex-col w-full max-w-4xl mx-auto py-24 stretch overflow-hidden">
-      <h1 className="text-6xl font-semibold leading-tight mt-4 mb-4">
-        <div className="flex flex-row gap-2">
-          Hello, I&apos;m{" "}
-          <div className="flex flex-row items-center gap-1">
-            <Brain size={50} className="text-green-800" /> Gummi
+      {messages.length === 0 && (
+        <h1 className="text-6xl font-semibold leading-tight mt-4 mb-4">
+          <div className="flex flex-row gap-2">
+            Hello, I&apos;m{" "}
+            <div className="flex flex-row items-center gap-1">
+              <Brain size={50} className="text-green-800" /> Gummi
+            </div>
           </div>
-        </div>
-        <br />
-        <span className="text-gray-400">Ask me anything you want</span>
-      </h1>
-
+          <br />
+          <span className="text-gray-400">Ask me anything you want</span>
+        </h1>
+      )}
+      {messages.length > 0 && (
+        <>
+          <ChatList
+            messages={messages}
+            isLoading={status === "submitted" || status === "streaming"}
+          />
+        </>
+      )}
       <div ref={messageEndRef}></div>
       <form
         className="stretch max-w-4xl flex flex-row"
-        // ref={formRef}
+        ref={formRef}
         role="form"
         aria-labelledby="chat-form-label"
-        // onSubmit={handleSubmit}
+        onSubmit={handleSubmit}
       >
         <Textarea
           ref={inputRef}
@@ -50,6 +73,7 @@ function ChatPage() {
           name="message"
           rows={1}
           tabIndex={0}
+          onKeyDown={onKeyDown}
         />
       </form>
     </div>
