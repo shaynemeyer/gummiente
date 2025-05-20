@@ -1,9 +1,19 @@
-import { createOpenAI, OpenAIProvider } from "@ai-sdk/openai";
-import { createOllama, OllamaProvider } from "ollama-ai-provider";
+import {
+  createOpenAI,
+  OpenAIProvider,
+  OpenAIProviderSettings,
+} from "@ai-sdk/openai";
+import {
+  createOllama,
+  OllamaProvider,
+  OllamaProviderSettings,
+} from "ollama-ai-provider";
 
 const supportedProviders: {
   [key: string]: {
-    constructor: () => OpenAIProvider | OllamaProvider;
+    constructor: (
+      options?: OpenAIProviderSettings | OllamaProviderSettings
+    ) => OpenAIProvider | OllamaProvider;
     models: string[];
   };
 } = {
