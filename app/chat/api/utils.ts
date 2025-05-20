@@ -23,7 +23,7 @@ const supportedProviders: {
   },
   ollama: {
     constructor: createOllama,
-    models: [""],
+    models: ["llama3.2"], // todo: fetch this list from utils/supportedModels
   },
 };
 

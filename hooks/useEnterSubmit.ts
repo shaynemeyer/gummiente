@@ -13,6 +13,7 @@ function useEnterSubmit() {
     ) {
       formRef.current?.requestSubmit();
       event.preventDefault();
+      console.log("submitting");
     }
   };
 

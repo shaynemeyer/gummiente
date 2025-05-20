@@ -6,14 +6,14 @@ import useEnterSubmit from "@/hooks/useEnterSubmit";
 import useFocusOnSlashPress from "@/hooks/useFocusOnSlashPress";
 import { useChat } from "@ai-sdk/react";
 import { Brain } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function ChatPage() {
-  const [provider, setProvider] = useState("openai");
-  const [model, setModel] = useState("gpt-4");
+  const [provider, setProvider] = useState("ollama");
+  const [model, setModel] = useState("llama3.2");
 
   const { messages, input, handleInputChange, handleSubmit, status } = useChat({
-    api: "/api",
+    api: "/chat/api",
     body: {
       provider,
       model,
@@ -74,6 +74,8 @@ function ChatPage() {
           rows={1}
           tabIndex={0}
           onKeyDown={onKeyDown}
+          onChange={handleInputChange}
+          value={input}
         />
       </form>
     </div>
