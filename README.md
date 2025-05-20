@@ -20,7 +20,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Provider & Model Support
 Currently this application supports the following providers
 - OpenAI
-- Ollama - Whatever you have installed. :)
+- Ollama - With whatever models you have installed. :) Be sure to update based on what you have.
 
 More coming soon...
 
