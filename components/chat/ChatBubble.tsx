@@ -1,5 +1,5 @@
 import { Card } from "../ui/card";
-import { Brain } from "lucide-react";
+import { Brain, UserRound } from "lucide-react";
 
 type Props = {
   text: string;
@@ -20,11 +20,13 @@ function ChatBubble({
     >
       <h5 className="text-lg font-semibold">
         {role === "assistant" ? (
-          <div>
+          <div className="flex flex-row gap-1 text-2xl text-center items-center">
             <Brain /> Gummi
           </div>
         ) : (
-          `👤 ${role}`
+          <div className="flex flex-row gap-1 text-2xl text-center items-center">
+            <UserRound /> {role}
+          </div>
         )}
       </h5>
       <p>{text}</p>
