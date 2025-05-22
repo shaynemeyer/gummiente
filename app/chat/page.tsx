@@ -78,6 +78,8 @@ function ChatPage() {
   const providers = supportedProviders();
   const models = supportedModels();
 
+  if (!providers.length || !Object.entries(models).length) return null;
+
   return (
     <>
       <div className="flex justify-end gap-4 px-5 absolute right-0">
@@ -94,17 +96,21 @@ function ChatPage() {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button>
                 Model:{" "}
-                {model && models[model]?.find((p) => p.value === model)?.label}
+                {
+                  Object.entries(models)
+                    .find(([key]) => key === provider)![1]
+                    .find((m) => m.value === model)?.label
+                }
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              {model &&
-                models[model]?.map((p) => (
+              {Object.entries(models)
+                .find(([key]) => key === provider)![1]
+                ?.map((p) => (
                   <DropdownMenuItem key={p.value}>{p.label}</DropdownMenuItem>
                 ))}
             </DropdownMenuContent>
