@@ -2,11 +2,7 @@ import ChatBubble from "./ChatBubble";
 import ChatBubbleLoading from "./ChatBubbleLoading";
 
 type Props = {
-  messages: {
-    id: string;
-    role: string;
-    content: string;
-  }[];
+  messages: AIMessage[];
   isLoading: boolean;
 };
 

@@ -3,3 +3,9 @@ type ValueLabel = {
   value: string;
   label: string;
 };
+
+type AIMessage = {
+  id?: string;
+  role: "user" | "data" | "system" | "assistant";
+  content: string;
+};
