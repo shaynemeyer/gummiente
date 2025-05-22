@@ -9,8 +9,8 @@ type Props = {
 function ChatList({ messages, isLoading }: Props) {
   return (
     <ul className="flex flex-col gap-5">
-      {messages.map((message) => (
-        <li key={message?.id}>
+      {messages.map((message, idx) => (
+        <li key={idx}>
           <ChatBubble
             role={message.role}
             text={message.content}
