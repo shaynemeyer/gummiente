@@ -5,6 +5,7 @@ import Header from "@/components/shared/header/Header";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import { AI } from "./chat/actions";
+import AutoScroll from "@/components/AutoScroll";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,6 +35,7 @@ export default function RootLayout({
             <Toaster position="top-center" />
           </ThemeProvider>
         </AI>
+        <AutoScroll trackVisibility />
       </body>
     </html>
   );

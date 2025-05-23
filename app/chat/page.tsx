@@ -15,7 +15,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+
+import { AIMessage } from "@/lib";
 
 /* 
 These export statements ensure that the page is always dynamically 
@@ -56,7 +57,7 @@ function ChatPage() {
     setIsloading(true);
     setConversation((currentConversation: AIMessage[]) => [
       ...currentConversation,
-      { id: generateId(), role: "user", content: "input" },
+      { id: generateId(), role: "user", content: input },
     ]);
 
     const message = await continueConversation(input, provider, model);
@@ -71,6 +72,8 @@ function ChatPage() {
     scrollToBottom();
   }, [conversation]);
 
+  console.log({ conversation });
+
   const providers = supportedProviders();
   const models = supportedModels();
 
@@ -78,81 +81,83 @@ function ChatPage() {
 
   return (
     <>
-      <div className="flex justify-end gap-4 px-5 absolute right-0">
-        <div className="flex flex-col gap-3">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button>
-                Provider: {providers.find((p) => p.value === provider)?.label}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {providers.map((p) => (
-                <DropdownMenuItem key={p.value}>{p.label}</DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button>
-                Model:{" "}
-                {
-                  Object.entries(models)
-                    .find(([key]) => key === provider)![1]
-                    .find((m) => m.value === model)?.label
-                }
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {Object.entries(models)
-                .find(([key]) => key === provider)![1]
-                ?.map((p) => (
+      <div>
+        <div className="flex justify-end gap-4 px-5 absolute right-0">
+          <div className="flex flex-col gap-3">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div>
+                  Provider: {providers.find((p) => p.value === provider)?.label}
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {providers.map((p) => (
                   <DropdownMenuItem key={p.value}>{p.label}</DropdownMenuItem>
                 ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div>
+                  Model:{" "}
+                  {
+                    Object.entries(models)
+                      .find(([key]) => key === provider)![1]
+                      .find((m) => m.value === model)?.label
+                  }
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {Object.entries(models)
+                  .find(([key]) => key === provider)![1]
+                  ?.map((p) => (
+                    <DropdownMenuItem key={p.value}>{p.label}</DropdownMenuItem>
+                  ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </div>
-      <div className="flex flex-col w-full max-w-4xl mx-auto py-24 stretch overflow-hidden">
-        {conversation.length === 0 && (
-          <h1 className="text-6xl font-semibold leading-tight mt-4 mb-4">
-            <div className="flex flex-row gap-2">
-              Hello, I&apos;m{" "}
-              <div className="flex flex-row items-center gap-1">
-                <Brain size={50} className="text-green-800" /> Gummi
+        <div className="flex flex-col w-full max-w-4xl mx-auto py-24 stretch overflow-hidden">
+          {conversation.length === 0 && (
+            <h1 className="text-6xl font-semibold leading-tight mt-4 mb-4">
+              <div className="flex flex-row gap-2">
+                Hello, I&apos;m{" "}
+                <div className="flex flex-row items-center gap-1">
+                  <Brain size={50} className="text-green-800" /> Gummi
+                </div>
               </div>
-            </div>
-            <br />
-            <span className="text-gray-400">Ask me anything you want</span>
-          </h1>
-        )}
-        {conversation.length > 0 && (
-          <ChatList messages={conversation} isLoading={isLoading} />
-        )}
-        <div ref={messageEndRef}></div>
-        <form
-          className="stretch max-w-4xl flex flex-row"
-          ref={formRef}
-          role="form"
-          aria-labelledby="chat-form-label"
-          onSubmit={handleOnSubmit}
-        >
-          <Textarea
-            ref={inputRef}
-            className="fixed bottom-0 w-full max-w-4xl p-2 mb-8 border border-gray-300 rounded shadow-xl"
-            autoFocus
-            placeholder="Type your message here..."
-            spellCheck={false}
-            autoCorrect="off"
-            autoComplete="off"
-            name="message"
-            rows={1}
-            tabIndex={0}
-            onKeyDown={onKeyDown}
-            onChange={handleInputChange}
-            value={input}
-          />
-        </form>
+              <br />
+              <span className="text-gray-400">Ask me anything you want</span>
+            </h1>
+          )}
+          {conversation.length > 0 && (
+            <ChatList messages={conversation} isLoading={isLoading} />
+          )}
+          <div ref={messageEndRef}></div>
+          <form
+            className="stretch max-w-4xl flex flex-row"
+            ref={formRef}
+            role="form"
+            aria-labelledby="chat-form-label"
+            onSubmit={handleOnSubmit}
+          >
+            <Textarea
+              ref={inputRef}
+              className="fixed bottom-0 w-full max-w-4xl p-2 mb-8 border border-gray-300 rounded shadow-xl"
+              autoFocus
+              placeholder="Type your message here..."
+              spellCheck={false}
+              autoCorrect="off"
+              autoComplete="off"
+              name="message"
+              rows={1}
+              tabIndex={0}
+              onKeyDown={onKeyDown}
+              onChange={handleInputChange}
+              value={input}
+            />
+          </form>
+        </div>{" "}
       </div>
     </>
   );

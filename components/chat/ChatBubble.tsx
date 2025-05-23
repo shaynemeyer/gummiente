@@ -1,8 +1,9 @@
+import { ReactNode } from "react";
 import { Card } from "../ui/card";
 import { Brain, UserRound } from "lucide-react";
 
 type Props = {
-  text: string;
+  text: string | ReactNode;
   role?: string;
   className?: string;
   width?: string;

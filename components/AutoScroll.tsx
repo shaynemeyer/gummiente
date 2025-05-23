@@ -21,6 +21,6 @@ function AutoScroll({ trackVisibility = false }) {
     }
   }, [inView, entry, isAtBottom, trackVisibility]);
 
-  return <div ref={ref} className="h-px w-full" />;
+  return <div ref={ref} className="h-px w-full mt-5" />;
 }
 export default AutoScroll;

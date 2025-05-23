@@ -21,6 +21,7 @@ export async function continueConversation(
       if (done) {
         history.done([...history.get(), { role: "assistant", content: input }]);
       }
+      // console.log(content);
       return (
         <ChatBubble
           role="assistant"

@@ -1,3 +1,4 @@
+import { AIMessage } from "@/lib";
 import ChatBubble from "./ChatBubble";
 import ChatBubbleLoading from "./ChatBubbleLoading";
 
@@ -11,13 +12,15 @@ function ChatList({ messages, isLoading }: Props) {
     <ul className="flex flex-col gap-5">
       {messages.map((message, idx) => (
         <li key={idx}>
-          <ChatBubble
-            role={message.role}
-            text={message.content}
-            className={`${
-              message.role === "assistant" ? "mr-auto" : "ml-auto"
-            } border-none`}
-          />
+          {message.role === "user" ? (
+            <ChatBubble
+              role={message.role}
+              text={message.content}
+              className="ml-auto border-none"
+            />
+          ) : (
+            message?.display
+          )}
         </li>
       ))}
       {isLoading ? (
