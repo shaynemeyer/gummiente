@@ -4,18 +4,15 @@ import ChatList from "@/components/chat/ChatList";
 import { Textarea } from "@/components/ui/textarea";
 import useEnterSubmit from "@/hooks/useEnterSubmit";
 import useFocusOnSlashPress from "@/hooks/useFocusOnSlashPress";
-
+import { generateId } from "ai";
 import { Brain } from "lucide-react";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
-import { continueConversation } from "./actions";
-import { readStreamableValue } from "ai/rsc";
+import { useActions, useUIState } from "ai/rsc";
 import { supportedModels, supportedProviders } from "@/lib/supportedProviders";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -34,9 +31,12 @@ function ChatPage() {
 
   const { formRef, onKeyDown } = useEnterSubmit();
   const inputRef = useFocusOnSlashPress();
-  const [isLoading, setIsloading] = useState(false);
-  const [conversationMessages, setMessages] = useState<AIMessage[]>([]);
+
   const [input, setInput] = useState("");
+  const [isLoading, setIsloading] = useState(false);
+  const [conversation, setConversation] = useUIState();
+  const { continueConversation } = useActions();
+
   const messageEndRef = useRef<null | HTMLDivElement>(null);
   const scrollToBottom = () => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -54,26 +54,22 @@ function ChatPage() {
     if (!value) return;
 
     setIsloading(true);
-    setMessages([...conversationMessages, { role: "user", content: "input" }]);
+    setConversation((currentConversation: AIMessage[]) => [
+      ...currentConversation,
+      { id: generateId(), role: "user", content: "input" },
+    ]);
 
-    const { messages, newMessage } = await continueConversation(
-      [...conversationMessages, { role: "user", content: input }],
-      provider,
-      model
-    );
-
-    let textContent = "";
-
-    for await (const delta of readStreamableValue(newMessage)) {
-      textContent = `${textContent}${delta}`;
-      setMessages([...messages, { role: "assistant", content: textContent }]);
-    }
+    const message = await continueConversation(input, provider, model);
+    setConversation((currentConversation: AIMessage[]) => [
+      ...currentConversation,
+      message,
+    ]);
     setIsloading(false);
   };
 
   useEffect(() => {
     scrollToBottom();
-  }, [conversationMessages]);
+  }, [conversation]);
 
   const providers = supportedProviders();
   const models = supportedModels();
@@ -118,7 +114,7 @@ function ChatPage() {
         </div>
       </div>
       <div className="flex flex-col w-full max-w-4xl mx-auto py-24 stretch overflow-hidden">
-        {conversationMessages.length === 0 && (
+        {conversation.length === 0 && (
           <h1 className="text-6xl font-semibold leading-tight mt-4 mb-4">
             <div className="flex flex-row gap-2">
               Hello, I&apos;m{" "}
@@ -130,10 +126,8 @@ function ChatPage() {
             <span className="text-gray-400">Ask me anything you want</span>
           </h1>
         )}
-        {conversationMessages.length > 0 && (
-          <>
-            <ChatList messages={conversationMessages} isLoading={isLoading} />
-          </>
+        {conversation.length > 0 && (
+          <ChatList messages={conversation} isLoading={isLoading} />
         )}
         <div ref={messageEndRef}></div>
         <form

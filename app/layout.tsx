@@ -1,15 +1,16 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
-import Header from '@/components/shared/header/Header';
-import { ThemeProvider } from 'next-themes';
-import { Toaster } from '@/components/ui/sonner';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import Header from "@/components/shared/header/Header";
+import { ThemeProvider } from "next-themes";
+import { Toaster } from "@/components/ui/sonner";
+import { AI } from "./chat/actions";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Gummiente',
-  description: 'Your personal Rubber Duckie AI',
+  title: "Gummiente",
+  description: "Your personal Rubber Duckie AI",
 };
 
 export default function RootLayout({
@@ -20,17 +21,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className}`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Header />
+        <AI>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
 
-          {children}
-          <Toaster position="top-center" />
-        </ThemeProvider>
+            {children}
+            <Toaster position="top-center" />
+          </ThemeProvider>
+        </AI>
       </body>
     </html>
   );

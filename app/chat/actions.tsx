@@ -1,35 +1,47 @@
 "use server";
 
-import { streamText } from "ai";
-import { createStreamableValue } from "ai/rsc";
+import { generateId } from "ai";
+import { createAI, getMutableAIState, streamUI } from "ai/rsc";
+
 import getSupportedModel from "./utils";
+import ChatBubble from "@/components/chat/ChatBubble";
 
 export async function continueConversation(
-  history: AIMessage[],
+  input: string,
   provider: string,
   model: string
 ) {
   "use server";
   const supportedModel = getSupportedModel(provider, model);
-  const stream = createStreamableValue();
-
-  (async () => {
-    const { textStream } = await streamText({
-      model: supportedModel,
-      system:
-        "I'm happy to assist you in any way I can. How can I be of service today?",
-      messages: history,
-    });
-
-    for await (const text of textStream) {
-      stream.update(text);
-    }
-
-    stream.done();
-  })();
+  const history = getMutableAIState();
+  const result = await streamUI({
+    model: supportedModel,
+    messages: [...history.get(), { role: "user", content: input }],
+    text: ({ content, done }) => {
+      if (done) {
+        history.done([...history.get(), { role: "assistant", content: input }]);
+      }
+      return (
+        <ChatBubble
+          role="assistant"
+          text={content}
+          className={`mr-auto border-none`}
+        />
+      );
+    },
+  });
 
   return {
-    messages: history,
-    newMessage: stream.value,
+    id: generateId(),
+    role: "assistant",
+    display: result.value,
   };
 }
+
+export const AI = createAI({
+  actions: {
+    continueConversation,
+  },
+  initialAIState: [],
+  initialUIState: [],
+});
