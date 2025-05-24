@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { AIMessage } from "@/lib";
+import AutoScroll from "@/components/AutoScroll";
 
 /* 
 These export statements ensure that the page is always dynamically 
@@ -154,6 +155,7 @@ function ChatPage() {
             value={input}
           />
         </form>
+        <AutoScroll trackVisibility />
       </div>
     </>
   );
